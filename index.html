@@ -1,0 +1,446 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#101b36" />
+    <meta
+      name="description"
+      content="منصة مستر بكرى خليفة لتعلم البرمجة والذكاء الاصطناعي."
+    />
+
+    <title>منصة مستر بكرى خليفة | البرمجة والذكاء الاصطناعي</title>
+
+    <link rel="stylesheet" href="style.css" />
+
+    <!-- مكتبة Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  </head>
+
+  <body>
+    <!-- رأس الصفحة -->
+
+    <header class="site-header">
+      <div class="header-inner">
+        <div class="brand">
+          <div class="brand-icon">🎓</div>
+          <div>
+            <h1>منصة مستر بكري خليفة</h1>
+            <p>البرمجة والذكاء الاصطناعي</p>
+          </div>
+        </div>
+
+        <nav aria-label="القائمة الرئيسية">
+          <a href="#home">الرئيسية</a>
+          <a href="#studentAccount">حساب الطالب</a>
+          <a href="#courses">الكورسات</a>
+          <a href="#lessons">الشروحات</a>
+          <a href="#exams">الامتحانات</a>
+          <a href="#teacherSection" id="openTeacherLogin">دخول المدرس</a>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <!-- الصفحة الرئيسية -->
+
+      <section class="hero" id="home">
+        <div class="hero-content">
+          <span class="hero-badge">🚀 مستقبلك يبدأ بالتعلم</span>
+
+          <h2>
+            تعلم البرمجة والذكاء الاصطناعي
+            <span>واصنع مستقبلك بنفسك</span>
+          </h2>
+
+          <p>
+            منصة تعليمية متكاملة تساعدك على التعلم من خلال الكورسات والشروحات
+            والامتحانات التفاعلية، وتتابع تقدمك خطوة بخطوة.
+          </p>
+
+          <div class="hero-actions">
+            <a href="#courses" class="btn">استكشف الكورسات</a>
+            <a href="#studentAccount" class="hero-secondary-btn">دخول الطالب</a>
+          </div>
+
+          <div class="hero-features">
+            <div>
+              <strong>📚</strong>
+              <span>كورسات تعليمية</span>
+            </div>
+            <div>
+              <strong>🎥</strong>
+              <span>شروحات وفيديوهات</span>
+            </div>
+            <div>
+              <strong>📝</strong>
+              <span>امتحانات تفاعلية</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- حساب الطالب -->
+      <section id="studentAccount">
+        <h2>حساب الطالب</h2>
+
+        <div class="panel">
+          <form id="studentLoginForm">
+            <h3>دخول الطالب</h3>
+
+            <label for="studentLoginName">اسم الطالب</label>
+
+            <input
+              type="text"
+              id="studentLoginName"
+              autocomplete="name"
+              placeholder="اكتب اسمك"
+              required
+            />
+
+            <label for="studentLoginCode">كود الدخول</label>
+
+            <input
+              type="password"
+              id="studentLoginCode"
+              autocomplete="current-password"
+              placeholder="اكتب كود الدخول"
+              required
+            />
+
+            <button type="submit">دخول</button>
+
+            <button
+              type="button"
+              id="studentRegisterButton"
+              class="secondary-button"
+            >
+              إنشاء حساب جديد
+            </button>
+          </form>
+
+          <p
+            id="studentMessage"
+            class="message"
+            role="status"
+            aria-live="polite"
+          ></p>
+
+          <div id="studentDashboard" hidden></div>
+        </div>
+      </section>
+
+      <!-- الكورسات -->
+      <section id="courses">
+        <h2>الكورسات التعليمية</h2>
+
+        <div id="coursesList" class="cards" aria-live="polite">
+          <p>جارٍ تحميل الكورسات...</p>
+        </div>
+      </section>
+
+      <!-- الشروحات -->
+      <section id="lessons">
+        <h2>الشروحات التعليمية</h2>
+
+        <div id="lessonsList" class="cards" aria-live="polite">
+          <p>جارٍ تحميل الشروحات...</p>
+        </div>
+
+        <div id="lessonContent" class="lesson-content"></div>
+      </section>
+
+      <!-- الامتحانات -->
+      <section id="exams">
+        <h2>الامتحانات التفاعلية</h2>
+
+        <div id="examsList" class="cards" aria-live="polite">
+          <p>جارٍ تحميل الامتحانات...</p>
+        </div>
+
+        <!-- منطقة عرض الامتحان -->
+        <div id="examArea" class="panel hidden">
+          <h3 id="activeExamTitle">الامتحان</h3>
+
+          <form id="examForm">
+            <label for="studentName">اسم الطالب</label>
+
+            <input
+              type="text"
+              id="studentName"
+              autocomplete="name"
+              required
+              placeholder="اكتب اسم الطالب"
+            />
+
+            <label for="studentGroup">الصف الدراسي</label>
+
+            <input
+              type="text"
+              id="studentGroup"
+              placeholder="اكتب الصف الدراسي"
+            />
+
+            <!-- الأسئلة والاختيارات -->
+            <div id="questions"></div>
+
+            <button type="submit" id="submitExam">
+              إنهاء الامتحان وإرسال الإجابة
+            </button>
+
+            <p
+              id="examMessage"
+              class="message"
+              role="status"
+              aria-live="polite"
+            ></p>
+          </form>
+        </div>
+      </section>
+
+      <!-- لوحة تحكم المدرس -->
+      <section id="teacherSection" class="hidden">
+        <div class="admin-container">
+          <h2>لوحة تحكم المدرس</h2>
+
+          <!-- تسجيل دخول المدرس -->
+          <div id="teacherLogin" class="admin-card">
+            <h3>تسجيل دخول المدرس</h3>
+
+            <form id="teacherLoginForm">
+              <label for="teacherEmail">البريد الإلكتروني</label>
+
+              <input
+                type="email"
+                id="teacherEmail"
+                autocomplete="username"
+                required
+                placeholder="البريد الإلكتروني"
+              />
+
+              <label for="teacherPassword">كلمة المرور</label>
+
+              <input
+                type="password"
+                id="teacherPassword"
+                autocomplete="current-password"
+                required
+                placeholder="كلمة المرور"
+              />
+
+              <button type="submit" id="teacherLoginButton">
+                تسجيل الدخول
+              </button>
+
+              <p
+                id="loginMessage"
+                class="message"
+                role="status"
+                aria-live="polite"
+              ></p>
+            </form>
+          </div>
+
+          <!-- لوحة الإدارة -->
+          <div id="teacherDashboard" class="hidden">
+            <!-- بيانات المدرس -->
+            <div class="admin-card">
+              <h3>مرحباً بك في لوحة الإدارة</h3>
+
+              <p>
+                يمكنك إدارة الكورسات والشروحات والامتحانات ومتابعة نتائج الطلاب.
+              </p>
+
+              <button type="button" id="logoutButton" class="danger-button">
+                تسجيل الخروج
+              </button>
+            </div>
+
+            <!-- إضافة كورس -->
+            <div class="admin-card">
+              <h3>إضافة كورس جديد</h3>
+
+              <form id="courseForm">
+                <label for="courseTitle">عنوان الكورس</label>
+
+                <input
+                  type="text"
+                  id="courseTitle"
+                  required
+                  placeholder="مثال: تعلم البرمجة"
+                />
+
+                <label for="courseDescription">وصف الكورس</label>
+
+                <textarea
+                  id="courseDescription"
+                  placeholder="اكتب وصف الكورس"
+                ></textarea>
+
+                <button type="submit">إضافة الكورس</button>
+
+                <p
+                  id="courseMessage"
+                  class="message"
+                  role="status"
+                  aria-live="polite"
+                ></p>
+              </form>
+            </div>
+
+            <!-- إضافة شرح -->
+            <div class="admin-card">
+              <h3>إضافة شرح جديد</h3>
+
+              <form id="lessonForm">
+                <label for="lessonCourse">اختيار الكورس</label>
+
+                <select id="lessonCourse" required>
+                  <option value="">اختاري الكورس</option>
+                </select>
+
+                <label for="lessonTitle">عنوان الشرح</label>
+
+                <input
+                  type="text"
+                  id="lessonTitle"
+                  required
+                  placeholder="عنوان الدرس"
+                />
+
+                <label for="lessonText">محتوى الشرح</label>
+
+                <textarea
+                  id="lessonText"
+                  required
+                  placeholder="اكتبي الشرح هنا"
+                ></textarea>
+
+                <label for="lessonVideo">رابط الفيديو (اختياري)</label>
+
+                <input type="url" id="lessonVideo" placeholder="https://..." />
+
+                <label for="lessonPDF">رابط ملف PDF (اختياري)</label>
+
+                <input type="url" id="lessonPDF" placeholder="https://..." />
+                <label for="lessonImages"
+                  >صور الشرح (يمكن اختيار أكثر من صورة)</label
+                >
+                <input
+                  type="file"
+                  id="lessonImages"
+                  accept="image/png,image/jpeg,image/webp"
+                  multiple
+                />
+                <p class="form-hint">الحد الأقصى 5 ميجابايت لكل صورة.</p>
+
+                <label for="lessonImages"
+                  >صور الشرح (يمكن اختيار أكثر من صورة)</label
+                >
+                <input
+                  type="file"
+                  id="lessonImages"
+                  accept="image/png,image/jpeg,image/webp"
+                  multiple
+                />
+                <p class="form-hint">الحد الأقصى 5 ميجابايت لكل صورة.</p>
+
+                <button type="submit">إضافة الشرح</button>
+
+                <p
+                  id="lessonMessage"
+                  class="message"
+                  role="status"
+                  aria-live="polite"
+                ></p>
+              </form>
+            </div>
+
+            <!-- إنشاء امتحان -->
+            <div class="admin-card">
+              <h3>إنشاء امتحان جديد</h3>
+
+              <form id="examCreateForm">
+                <label for="examCourse">اختيار الكورس</label>
+
+                <select id="examCourse" required>
+                  <option value="">اختاري الكورس</option>
+                </select>
+
+                <label for="newExamTitle">عنوان الامتحان</label>
+
+                <input
+                  type="text"
+                  id="newExamTitle"
+                  required
+                  placeholder="مثال: امتحان HTML"
+                />
+
+                <div id="newExamQuestions"></div>
+
+                <button
+                  type="button"
+                  id="addQuestionButton"
+                  class="secondary-button"
+                >
+                  إضافة سؤال
+                </button>
+
+                <button type="submit">حفظ الامتحان</button>
+
+                <p
+                  id="examCreateMessage"
+                  class="message"
+                  role="status"
+                  aria-live="polite"
+                ></p>
+              </form>
+            </div>
+
+            <!-- إدارة الشروحات -->
+            <div class="admin-card">
+              <h3>إدارة الشروحات</h3>
+
+              <div id="adminLessonsList" class="item-list">
+                لا توجد بيانات محملة.
+              </div>
+            </div>
+
+            <!-- إدارة الامتحانات -->
+            <div class="admin-card">
+              <h3>إدارة الامتحانات</h3>
+
+              <div id="adminExamsList" class="item-list">
+                لا توجد بيانات محملة.
+              </div>
+            </div>
+
+            <!-- نتائج الطلاب -->
+            <div class="admin-card">
+              <h3>نتائج الطلاب</h3>
+
+              <button type="button" id="loadResultsButton">عرض النتائج</button>
+
+              <div
+                id="studentResults"
+                class="item-list"
+                aria-live="polite"
+              ></div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- تذييل الصفحة -->
+    <footer>
+      <h3>منصة مستر بكرى خليفة</h3>
+      <p>البرمجة والذكاء الاصطناعي</p>
+      <p>جميع الحقوق محفوظة © 2026</p>
+    </footer>
+
+    <!-- ملفات تشغيل المنصة -->
+    <script src="config.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
